@@ -3,6 +3,7 @@ package com.example.hibernatehw.controller;
 import com.example.hibernatehw.model.Person;
 import com.example.hibernatehw.service.PersonCrudService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,5 +38,10 @@ public class AuthController {
     public Optional<Person> getPersonsByNameAndSurname(@RequestParam("name") String name,
                                                        @RequestParam("surname") String surname) {
         return service.findByNameAndSurname(name, surname);
+    }
+    @GetMapping("/username")
+    @PostAuthorize("#username == authentication.principal.username")
+    public String named(String username) {
+        return username + " hello!.";
     }
 }
